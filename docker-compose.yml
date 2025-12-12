@@ -1,0 +1,25 @@
+services:
+  api:
+    build: ./api
+    container_name: ashiato-api
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./api/app:/container-api/app 
+    depends_on:
+      - db 
+  
+  db:
+    image: postgres:16
+    container_name: ashiato-postgres
+    environment:
+      POSTGRES_USER: appuser
+      POSTGRES_PASSWORD: secretpassword
+      POSTGRES_DB: appdb
+    ports:
+      - "5432:5432"   # 開発時にローカルからも接続したければ開ける
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
